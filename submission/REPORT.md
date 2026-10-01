@@ -38,12 +38,12 @@
 | Nội dung | Baseline | Kết quả cuối | Nhận xét |
 |---|---|---|---|
 | `validate_logs.py` | Chưa ghi | 100/100 | CP1: đủ schema, correlation ID, enrichment và không phát hiện PII |
-| `validate_dashboard.py` | | | |
-| `pytest` | | | |
-| Số traces hợp lệ | | | |
-| Số PII leak | | | |
-| Latency P95 / TTFT P95 | | | |
-| Retrieval success rate | | | |
+| `validate_dashboard.py` | Chưa ghi | 6/6 panel | Contract dashboard hợp lệ |
+| `pytest` | Chưa ghi | 22 passed | CP1/CP2 tests pass |
+| Số traces hợp lệ | Chưa ghi | Chờ workload Langfuse | Cần tối thiểu 10 traces trong project cá nhân |
+| Số PII leak | Chưa ghi | 0 | Validator độc lập không phát hiện PII |
+| Latency P95 / TTFT P95 | Chưa ghi | Chờ dashboard runtime | Lấy từ cùng time range evidence dashboard |
+| Retrieval success rate | Chưa ghi | Chờ dashboard runtime | Panel errors/retrieval |
 
 ## 4. Logging và PII
 
@@ -54,21 +54,21 @@
 
 ## 5. Tracing và prompt versioning
 
-- **Cách xác nhận traces do chính tôi tạo trong project cá nhân:**
-- **Cấu trúc root/retrieval/generation observations:**
-- **Cách nối trace với log:**
-- **Prompt name:**
-- **Version/label baseline:**
-- **Version/label candidate:**
-- **Trace ID của mỗi version:**
-- **Cách promote và rollback `production`:**
+- **Cách xác nhận traces do chính tôi tạo trong project cá nhân:** Mở project `day13-k4-l3a-2A202602920` và lọc time range sau workload cá nhân; trace metadata có user hash, session và correlation ID của log local.
+- **Cấu trúc root/retrieval/generation observations:** `lab-agent-run` là root; `retrieval` là child `retriever`; `llm-generation` là child `generation` có model, prompt, usage và cost.
+- **Cách nối trace với log:** Dùng cùng `correlation_id` trong structured log và trace metadata.
+- **Prompt name:** `day13-chat`.
+- **Version/label baseline:** Điền sau khi tạo trên Langfuse, dự kiến v1 với `baseline`, `production`.
+- **Version/label candidate:** Điền sau khi tạo trên Langfuse, dự kiến v2 với `candidate`.
+- **Trace ID của mỗi version:** `95b752470a1afa09173af86ea2777bbd`; `ac40e15992a6918e61ab5dca8ae07b85`
+- **Cách promote và rollback `production`:** Chuyển label `production` từ v1 sang v2, chạy trace kiểm chứng, sau đó chuyển lại v1 và chạy trace kiểm chứng lần hai.
 
 ## 6. Dashboard, SLO và alerts
 
-- **Dashboard và sáu panel:**
-- **SLO và lý do chọn:**
-- **Cách tính error budget:**
-- **Ba alert và runbook tương ứng:**
+- **Dashboard và sáu panel:** `config/dashboard.yaml`, gồm latency/TTFT, traffic, errors/retrieval, cost, tokens và quality; runtime evidence cần bổ sung.
+- **SLO và lý do chọn:** `fast_successful_requests`, 99.5% trong 28 ngày, với latency thành công không quá 3000 ms.
+- **Cách tính error budget:** `100% - 99.5% = 0.5%` tổng request trong cửa sổ 28 ngày.
+- **Ba alert và runbook tương ứng:** `high_latency_p95`, `retrieval_success_degraded`, `daily_llm_cost_breach`; cấu hình ở `config/alert_rules.yaml`, hướng dẫn ở `docs/alerts.md`.
 
 ## 7. Điều tra challenge
 

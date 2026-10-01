@@ -1,0 +1,21 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'>
+<title>K4-L3A Day 13 Monitoring Dashboard</title><style>
+body{font-family:Arial,sans-serif;background:#f5f7fb;color:#172033;margin:32px}
+h1{margin-bottom:4px}.sub{color:#526070;margin-bottom:24px}.grid{display:grid;grid-template-columns:repeat(2,minmax(320px,1fr));gap:16px}
+.panel{background:#fff;border:1px solid #d9e0ea;border-radius:10px;padding:18px;min-height:130px;box-shadow:0 2px 8px #17203312}
+h2{font-size:18px;margin:0 0 12px}.meta{font-size:12px;color:#526070;margin-bottom:18px}.value{font-size:20px;line-height:1.7;font-weight:600}
+</style></head><body><h1>K4-L3A Day 13 Monitoring &amp; LLMOps</h1>
+<div class='sub'>Runtime dashboard · time range: last 60 minutes · refresh: 30 seconds · source: data/logs.jsonl</div>
+<div class='grid'><section class='panel'><h2>Latency percentiles and TTFT</h2>
+<div class='meta'>Unit: ms · Threshold/SLO: P95 ≤ 3000 ms</div>
+<div class='value'>P50 151 · P95 874 · P99 2760<br>TTFT P95 50</div></section><section class='panel'><h2>Request traffic</h2>
+<div class='meta'>Unit: requests_per_minute · Threshold/SLO: ≥ 1 request/min</div>
+<div class='value'>83 requests<br>1.38 requests/min</div></section><section class='panel'><h2>Error rate and retrieval success</h2>
+<div class='meta'>Unit: percent · Threshold/SLO: Error ≤ 2% · Retrieval ≥ 90%</div>
+<div class='value'>Errors 0.00%<br>Retrieval success 100.00%</div></section><section class='panel'><h2>Cost over time</h2>
+<div class='meta'>Unit: usd · Threshold/SLO: Total ≤ 2.5 USD</div>
+<div class='value'>Total $0.171795<br>Average $0.002070</div></section><section class='panel'><h2>Input and output tokens</h2>
+<div class='meta'>Unit: tokens · Threshold/SLO: Total ≤ 50000</div>
+<div class='value'>Input 3,225<br>Output 10,808</div></section><section class='panel'><h2>Quality proxy</h2>
+<div class='meta'>Unit: score_0_to_1 · Threshold/SLO: Mean ≥ 0.75</div>
+<div class='value'>Mean 0.880</div></section></div></body></html>
