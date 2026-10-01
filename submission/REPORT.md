@@ -4,13 +4,13 @@
 
 ## 1. Thông tin học viên
 
-- **Họ và tên:**
-- **MSSV:**
+- **Họ và tên:** Nguyễn Minh Dương
+- **MSSV:** 2A202602920
 - **Lớp:** K4-L3A
-- **Repository URL:**
+- **Repository URL:** https://github.com/minhduong814/K4-L3A-DAY13-NguyenMinhDuong-2A202602920-Monitoring-LLMOps
 - **Commit SHA cuối:**
 - **Challenge ID:**
-- **Tên project Langfuse cá nhân:** `day13-k4-l3a-<MSSV>`
+- **Tên project Langfuse cá nhân:** `day13-k4-l3a-2A202602920`
 
 ## 2. Evidence index
 
@@ -19,10 +19,10 @@
 | Evidence | Đường dẫn |
 |---|---|
 | Pytest cuối | `evidence/01-pytest.png` |
-| Log validator | `evidence/02-log-validator.png` |
+| Log validator | `evidence/02-log-validator-cp1.txt` |
 | Dashboard validator | `evidence/03-dashboard-validator.png` |
-| Structured log | `evidence/04-structured-log.png` |
-| PII redaction | `evidence/05-pii-redaction.png` |
+| Structured log | `evidence/04-structured-log-cp1.txt` |
+| PII redaction | `evidence/05-pii-redaction-cp1.txt` |
 | Trace list | `evidence/06-trace-list.png` |
 | Trace waterfall | `evidence/07-trace-waterfall.png` |
 | Trace metadata | `evidence/08-trace-metadata.png` |
@@ -37,7 +37,7 @@
 
 | Nội dung | Baseline | Kết quả cuối | Nhận xét |
 |---|---|---|---|
-| `validate_logs.py` | | | |
+| `validate_logs.py` | Chưa ghi | 100/100 | CP1: đủ schema, correlation ID, enrichment và không phát hiện PII |
 | `validate_dashboard.py` | | | |
 | `pytest` | | | |
 | Số traces hợp lệ | | | |
@@ -47,10 +47,10 @@
 
 ## 4. Logging và PII
 
-- **Cách tạo/nhận và truyền correlation ID:**
-- **Các metadata được ghi vào structured log:**
-- **Cách bảo đảm PII được scrub trước khi ghi:**
-- **Cách kiểm chứng kết quả:**
+- **Cách tạo/nhận và truyền correlation ID:** Middleware nhận `x-request-id` nếu đúng format `req-<8-hex>`, ngược lại sinh ID mới; bind vào structlog context và trả lại qua response header/API response.
+- **Các metadata được ghi vào structured log:** `user_id_hash`, `session_id`, `feature`, `model`, `env`, cùng latency/TTFT/token/cost ở response log.
+- **Cách bảo đảm PII được scrub trước khi ghi:** `scrub_event` chạy trước `JsonlFileProcessor` và JSON renderer, đệ quy qua toàn bộ event; email, điện thoại VN, CCCD và thẻ được thay bằng placeholder.
+- **Cách kiểm chứng kết quả:** `python -m pytest -q` đạt 22 passed và `python scripts/validate_logs.py` đạt 100/100 trên log mới; xem `evidence/02-log-validator-cp1.txt`, `04-structured-log-cp1.txt`, `05-pii-redaction-cp1.txt`.
 
 ## 5. Tracing và prompt versioning
 
